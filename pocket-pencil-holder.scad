@@ -1,10 +1,12 @@
 // ----------- Inputs -----------
 // The number of pencils to hold
 Pencils = 3; // [1:10]
-// The total width of the pocket
-Pocket_width_mm = 150;
 // The diameter of the pencil
 Pencil_diameter_mm = 9;
+// The total width of the pocket
+Pocket_width_mm = 150;
+// Add extra stabilising arm the width of the pocket
+Stabilizer = true;
 
 /* [Hidden] */
 // The minimum thinkness of the wall
@@ -32,7 +34,9 @@ union(){
         holding_tubes();
         holes();
     };
-    stabilizer();
+    if (Stabilizer){
+        stabilizer();
+    };
 };
 
 // Create the stabilizer arm
@@ -50,7 +54,7 @@ module stabilizer() {
 module holding_tubes () {
     hull(){
         for ( p = [0:Pencils-1]){        
-            translate([0, p*spacing, wall_thickness_mm]){
+            translate([0, p*spacing, 0]){
                 cylinder(height, o_radius, o_radius);
             };
         };
