@@ -27,20 +27,27 @@ assert(height > pencil_nib_height, "Not tall enough to fit a pencil");
 
 
 // ------- Models ----------
-
+union(){
+    difference(){
+        holding_tubes();
+        holes();
+    };
+    stabilizer();
+};
 
 // Create the stabilizer arm
-hull(){
-    cylinder(stabilizer_height, o_radius, o_radius);
-
-    translate([0, Pocket_width_mm - 2*o_radius, 0]){
+module stabilizer() {
+    hull(){
         cylinder(stabilizer_height, o_radius, o_radius);
-    }
-}
 
-
-difference(){    
-    // The pencil holding tubes
+        translate([0, Pocket_width_mm - 2*o_radius, 0]){
+            cylinder(stabilizer_height, o_radius, o_radius);
+        };
+    };
+};
+ 
+// The pencil holding tubes
+module holding_tubes () {
     hull(){
         for ( p = [0:Pencils-1]){        
             translate([0, p*spacing, wall_thickness_mm]){
@@ -48,9 +55,11 @@ difference(){
             };
         };
     };
+};
     
-    // The holes for the pencils
-    for ( p = [0:Pencils-1]){        
+ // The holes for the pencils
+module holes () {
+    for ( p = [0:Pencils-1]){    
         translate([0, p*spacing, wall_thickness_mm]){
             hull(){
                 // The nib protecting hole
